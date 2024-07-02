@@ -20,10 +20,10 @@ namespace EduWork.Data.Entities
         public int WorkDayId { get; set; }
 
         [Required]
-        public DateOnly StartTime { get; set; }
+        public TimeOnly StartTime { get; set; }
 
         [Required]
-        public DateOnly EndTime { get; set; }
+        public TimeOnly EndTime { get; set; }
 
         public WorkDay WorkDay { get; set; }
     }

@@ -10,9 +10,6 @@ namespace EduWork.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext() : base()
-        {
-        }
 
         public DbSet<AnnualLeave> AnnualLeaves { get; set; }
 
@@ -27,5 +24,17 @@ namespace EduWork.Data
         public DbSet<UserProjectRole> UserProjectRoles { get; set; }
         public DbSet<WorkDay> WorkDays { get; set; }
         public DbSet<WorkDayTime> WorkDayTimes { get; set; }
+        /*
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+       
+        }
+        */
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=.;Database=EduWorkDb;Trusted_Connection=True;TrustServerCertificate=True");
+        }
+
+
 }
 }
