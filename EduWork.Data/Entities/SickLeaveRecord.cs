@@ -27,6 +27,6 @@ namespace EduWork.Data.Entities
         [MaxLength(200)]
         public string Comment { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

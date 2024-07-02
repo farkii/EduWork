@@ -6,28 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EduWork.Data.Entities
+namespace EduWork.Common.DTO
 {
-    [Table("AnnualLeave")]
-    public class AnnualLeave
+    public record AnnualLeaveDTO
     {
-        [Key]
         public int Id { get; set; }
-
-        [ForeignKey("User")]
-        [Required]
-        public int UserId { get; set; }
-
-        [Required]
         public int Year { get; set; }
-
-        [Required]
         public int TotalLeaveDays { get; set; }
-        
-        [Required]
         public int LeaveDaysLeft { get; set; } 
-
-        public virtual User User { get; set; }
 
     }
 }

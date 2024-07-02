@@ -28,7 +28,7 @@ namespace EduWork.Data.Entities
         [Required]
         public int TimeSpentMinutes { get; set; }
 
-        public WorkDay WorkDay { get; set; }
-        public Project Project { get; set; }
+        public virtual WorkDay WorkDay { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

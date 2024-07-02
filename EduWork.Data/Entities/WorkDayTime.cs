@@ -25,6 +25,6 @@ namespace EduWork.Data.Entities
         [Required]
         public TimeOnly EndTime { get; set; }
 
-        public WorkDay WorkDay { get; set; }
+        public virtual WorkDay WorkDay { get; set; }
     }
 }

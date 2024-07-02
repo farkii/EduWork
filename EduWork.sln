@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduWork.WebAPI", "EduWork.W
 		{FD264E0E-ACCF-4FAE-AF50-FEFBBB9261E6} = {FD264E0E-ACCF-4FAE-AF50-FEFBBB9261E6}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduWork.Data", "EduWork.Data\EduWork.Data.csproj", "{FD264E0E-ACCF-4FAE-AF50-FEFBBB9261E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduWork.Data", "EduWork.Data\EduWork.Data.csproj", "{FD264E0E-ACCF-4FAE-AF50-FEFBBB9261E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduWork.Domain", "EduWork.Domain\EduWork.Domain.csproj", "{566A522E-1FAB-4FAB-AB5F-4C862EBA2C78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduWork.Domain", "EduWork.Domain\EduWork.Domain.csproj", "{566A522E-1FAB-4FAB-AB5F-4C862EBA2C78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduWork.Common", "EduWork.Common\EduWork.Common.csproj", "{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{566A522E-1FAB-4FAB-AB5F-4C862EBA2C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{566A522E-1FAB-4FAB-AB5F-4C862EBA2C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{566A522E-1FAB-4FAB-AB5F-4C862EBA2C78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

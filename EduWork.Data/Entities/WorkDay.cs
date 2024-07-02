@@ -21,7 +21,7 @@ namespace EduWork.Data.Entities
         [Required]
         public DateOnly WorkDate { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public virtual List<WorkDayTime> WorkDayTimes { get; set; }
 

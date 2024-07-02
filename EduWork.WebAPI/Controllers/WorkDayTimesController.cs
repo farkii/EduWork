@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EduWork.Data;
 using EduWork.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web.Resource;
 
 namespace EduWork.WebAPI.Controllers
 {
+    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WorkDayTimesController : ControllerBase

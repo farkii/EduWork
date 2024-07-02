@@ -30,7 +30,7 @@ namespace EduWork.Data.Entities
         [Required]
         public string EntraObjectId { get; set; }
 
-        public AppRole AppRole { get; set; }
+        public virtual AppRole AppRole { get; set; }
 
         public virtual List<AnnualLeave> AnnualLeave { get; set; }
         public virtual List<WorkDay> WorkDays { get; set; }
