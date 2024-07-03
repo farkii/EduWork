@@ -20,12 +20,12 @@ namespace EduWork.WebAPI.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserProfile>>> GetUserProfiles() { 
+        public async Task<ActionResult<IEnumerable<ProfileShortDto>>> GetUserProfiles() { 
             return await userProfileService.GetAllUserProfilesAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserProfile>> GetUserProfile(int id)
+        public async Task<ActionResult<ProfileDetailsDto>> GetUserProfile(int id)
         {
             var user = await userProfileService.GetUserProfileAsync(id);
 
@@ -34,30 +34,5 @@ namespace EduWork.WebAPI.Controllers
             }
             return user;
         }
-
-        [HttpGet("projects/{id}")]
-        public async Task<ActionResult<IEnumerable<UserProject>>> GetUserProjects(int id)
-        {
-            return await userProfileService.GetAllUserProjectsAsync(id);
-        }
-
-        [HttpGet("annualleave/{id}")]
-        public async Task<ActionResult<IEnumerable<AnnualLeaveDTO>>> GetUserAnnualLeaves(int id)
-        {
-            return await userProfileService.GetUserAnnualLeaveAsync(id);
-        }
-
-        [HttpGet("annualleaverecords/{id}")]
-        public async Task<ActionResult<IEnumerable<AnnualLeaveRecordDTO>>> GetUserAnnualLeaveRecords(int id)
-        {
-            return await userProfileService.GetUserAnnualLeaveRecordsAsync(id);
-        }
-
-        [HttpGet("sickleaverecords/{id}")]
-        public async Task<ActionResult<IEnumerable<SickLeaveRecordDTO>>> GetUserSickLeaveRecords(int id)
-        {
-            return await userProfileService.GetUserSickLeaveRecordsAsync(id);
-        }
-
     }
 }

@@ -12,12 +12,14 @@ namespace EduWork.Domain.Services
 {
     public class UserProfileService(AppDbContext context) : IUserProfileService
     {
-        public async Task<List<UserProfile>> GetAllUserProfilesAsync(){
+
+        // TODO dva geta za sve korisnike (samo najbitnije - za admina) i jedan za korisnika po id (jako u detalje)
+        public async Task<List<ProfileShortDto>> GetAllUserProfilesAsync(){
             var users = await context.Users.ToListAsync();
-            var userProfiles = new List<UserProfile>();
+            var userProfiles = new List<ProfileShortDto>();
             users.ForEach(user =>
             {
-                userProfiles.Add(new UserProfile() { 
+                userProfiles.Add(new ProfileShortDto() { 
                     Id = user.Id,
                     Username = user.Username,
                     Email = user.Email
@@ -28,31 +30,40 @@ namespace EduWork.Domain.Services
             return userProfiles;
         }
 
-        public async Task<UserProfile> GetUserProfileAsync(int userId)
+        public async Task<ProfileDetailsDto> GetUserProfileAsync(int userId)
         {
             var user = await context.Users.FindAsync(userId);
+            var projects = await GetAllUserProjectsAsync(userId);
+            var annualLeaves = await GetUserAnnualLeaveAsync(userId);
+            var annualLeave = from al in annualLeaves where al.Year == DateTime.Now.Year select al;
+            var annualLeaveRecords = await GetUserAnnualLeaveRecordsAsync(userId);
+            var sickLeaveRecords = await GetUserSickLeaveRecordsAsync(userId);
 
-            var userProfile = new UserProfile()
+            var userProfile = new ProfileDetailsDto()
             {
                 Id = user.Id,
                 Username = user.Username,
-                Email = user.Email
+                Email = user.Email,
+                Projects = projects,
+                AnnualLeave = annualLeave.FirstOrDefault(),
+                AnnualLeaveRecords = annualLeaveRecords,
+                SickLeaveRecords = sickLeaveRecords
             };
 
 
             return userProfile;
         }
 
-        public async Task<List<UserProject>> GetAllUserProjectsAsync(int userId)
+        public async Task<List<UserProjectDto>> GetAllUserProjectsAsync(int userId)
         {
             var projects = await context.UserProjectRoles.Where(upr => upr.UserId == userId).Select(upr => upr.Project).ToListAsync();
 
-            var userProjects = new List<UserProject>();
+            var userProjects = new List<UserProjectDto>();
             foreach (var project in projects)
             {
                 var roleName = context.UserProjectRoles.Where(upr => upr.ProjectId == project.Id).Select(upr => upr.ProjectRole.Title).FirstOrDefault(); 
 
-                userProjects.Add(new UserProject()
+                userProjects.Add(new UserProjectDto()
                 {
                     Id = project.Id,
                     Title = project.Title,
@@ -65,13 +76,13 @@ namespace EduWork.Domain.Services
             return userProjects;
         }
 
-        public async Task<List<AnnualLeaveDTO>> GetUserAnnualLeaveAsync(int userId)
+        public async Task<List<AnnualLeaveDto>> GetUserAnnualLeaveAsync(int userId)
         {
             var annualLeaves = await context.AnnualLeaves.Where(al => al.UserId == userId).ToListAsync();
-            var userAnnualLeaves = new List<AnnualLeaveDTO>();
+            var userAnnualLeaves = new List<AnnualLeaveDto>();
             annualLeaves.ForEach(annualLeave =>
             {
-                userAnnualLeaves.Add(new AnnualLeaveDTO()
+                userAnnualLeaves.Add(new AnnualLeaveDto()
                 {
                     Id = annualLeave.Id,
                     Year = annualLeave.Year,
@@ -84,13 +95,13 @@ namespace EduWork.Domain.Services
             return userAnnualLeaves;
         }
 
-        public async Task<List<AnnualLeaveRecordDTO>> GetUserAnnualLeaveRecordsAsync(int userId)
+        public async Task<List<AnnualLeaveRecordDto>> GetUserAnnualLeaveRecordsAsync(int userId)
         {
             var annualLeaveRecords = await context.AnnualLeaveRecords.Where(alr => alr.UserId == userId).ToListAsync();
-            var userAnnualLeaveRecords = new List<AnnualLeaveRecordDTO>();
+            var userAnnualLeaveRecords = new List<AnnualLeaveRecordDto>();
             annualLeaveRecords.ForEach(annualLeaveRecord =>
             {
-                userAnnualLeaveRecords.Add(new AnnualLeaveRecordDTO()
+                userAnnualLeaveRecords.Add(new AnnualLeaveRecordDto()
                 {
                     Id = annualLeaveRecord.Id,
                     StartDate = annualLeaveRecord.StartDate,
@@ -103,13 +114,13 @@ namespace EduWork.Domain.Services
             return userAnnualLeaveRecords;
         }
 
-        public async Task<List<SickLeaveRecordDTO>> GetUserSickLeaveRecordsAsync(int userId)
+        public async Task<List<SickLeaveRecordDto>> GetUserSickLeaveRecordsAsync(int userId)
         {
             var sickLeaveRecords = await context.SickLeaveRecords.Where(alr => alr.UserId == userId).ToListAsync();
-            var userSickLeaveRecords = new List<SickLeaveRecordDTO>();
+            var userSickLeaveRecords = new List<SickLeaveRecordDto>();
             sickLeaveRecords.ForEach(sickLeaveRecord =>
             {
-                userSickLeaveRecords.Add(new SickLeaveRecordDTO()
+                userSickLeaveRecords.Add(new SickLeaveRecordDto()
                 {
                     Id = sickLeaveRecord.Id,
                     StartDate = sickLeaveRecord.StartDate,

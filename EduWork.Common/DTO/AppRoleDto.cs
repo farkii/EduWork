@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace EduWork.Common.DTO
 {
-    public record WorkDayTime
+    public record AppRoleDto
     {
         public int Id { get; set; }
-        public int WorkDayId { get; set; }
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

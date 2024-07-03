@@ -9,11 +9,11 @@ namespace EduWork.Domain.Contracts
 {
     public interface IUserProfileService
     {
-        public Task<List<UserProfile>> GetAllUserProfilesAsync();
-        public Task<UserProfile> GetUserProfileAsync(int userId);
-        public Task<List<UserProject>> GetAllUserProjectsAsync(int userId);
-        public Task<List<AnnualLeaveDTO>> GetUserAnnualLeaveAsync(int userId);
-        public Task<List<AnnualLeaveRecordDTO>> GetUserAnnualLeaveRecordsAsync(int userId);
-        public Task<List<SickLeaveRecordDTO>> GetUserSickLeaveRecordsAsync(int userId);
+        public Task<List<ProfileShortDto>> GetAllUserProfilesAsync();
+        public Task<ProfileDetailsDto> GetUserProfileAsync(int userId);
+        public Task<List<UserProjectDto>> GetAllUserProjectsAsync(int userId);
+        public Task<List<AnnualLeaveDto>> GetUserAnnualLeaveAsync(int userId);
+        public Task<List<AnnualLeaveRecordDto>> GetUserAnnualLeaveRecordsAsync(int userId);
+        public Task<List<SickLeaveRecordDto>> GetUserSickLeaveRecordsAsync(int userId);
     }
 }

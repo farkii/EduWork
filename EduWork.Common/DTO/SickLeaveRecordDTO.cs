@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EduWork.Common.DTO
 {
-    public record SickLeaveRecordDTO
+    public record SickLeaveRecordDto
     {
         public int Id { get; set; }
         public DateOnly StartDate { get; set; }

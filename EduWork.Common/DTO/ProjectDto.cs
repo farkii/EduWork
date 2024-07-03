@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EduWork.Common.DTO
 {
-    public record Project
+    public record ProjectDto
     {
         public int Id { get; set; }
         public string Title { get; set; }

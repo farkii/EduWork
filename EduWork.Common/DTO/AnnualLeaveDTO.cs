@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EduWork.Common.DTO
 {
-    public record AnnualLeaveDTO
+    public record AnnualLeaveDto
     {
         public int Id { get; set; }
         public int Year { get; set; }
