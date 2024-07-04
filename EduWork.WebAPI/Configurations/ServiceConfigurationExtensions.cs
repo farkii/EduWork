@@ -9,6 +9,10 @@ namespace EduWork.WebAPI.Configurations
 {
     public static class ServiceConfigurationExtensions
     {
+        private const string MICROSOFT_GRAPH_SECTION = "MicrosoftGraph";
+        private const string EDUWORK_API_NAME = "EduWorkApi";
+        private const string EDUWORK_API_VERSION = "v1";
+        private const string AUTHENTICATION_ID = "oauth2";
         public static void AllServiceConfigurations(this WebApplicationBuilder builder) {
             var azureAdOptions = new AzureAdOptions();
             var swaggerAzureAdOptions = new SwaggerAzureAdOptions();
@@ -19,7 +23,7 @@ namespace EduWork.WebAPI.Configurations
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection(AzureAdOptions.Section))
             .EnableTokenAcquisitionToCallDownstreamApi()
-            .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+            .AddMicrosoftGraph(builder.Configuration.GetSection(MICROSOFT_GRAPH_SECTION))
             .AddInMemoryTokenCaches();
 
             builder.Services.AddControllers();
@@ -30,8 +34,8 @@ namespace EduWork.WebAPI.Configurations
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "EduWorkApi", Version = "v1" });
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                options.SwaggerDoc(EDUWORK_API_VERSION, new OpenApiInfo { Title = EDUWORK_API_NAME, Version = EDUWORK_API_VERSION });
+                options.AddSecurityDefinition(AUTHENTICATION_ID, new OpenApiSecurityScheme
                 {
                     Description = "Oauth2.0",
                     Name = "oauth2.0",
@@ -58,7 +62,7 @@ namespace EduWork.WebAPI.Configurations
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "oauth2"
+                    Id = AUTHENTICATION_ID
                 }
             },
             new[] { swaggerAzureAdOptions.Scope }
