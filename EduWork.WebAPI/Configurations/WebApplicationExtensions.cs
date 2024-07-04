@@ -6,12 +6,14 @@ namespace EduWork.WebAPI.Configurations
     public static class WebApplicationExtensions
     {
         public static void AllAppConfigurations(this WebApplication app, WebApplicationBuilder builder) {
+            var swaggerAzureAdOptions = new SwaggerAzureAdOptions();
+            builder.Configuration.GetSection(SwaggerAzureAdOptions.Section).Bind(swaggerAzureAdOptions);
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.OAuthClientId(builder.Configuration["SwaggerAzureAd:ClientId"]);
+                    options.OAuthClientId(swaggerAzureAdOptions.ClientId);
                     options.OAuthUsePkce();
                 });
             }

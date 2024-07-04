@@ -10,8 +10,14 @@ namespace EduWork.WebAPI.Configurations
     public static class ServiceConfigurationExtensions
     {
         public static void AllServiceConfigurations(this WebApplicationBuilder builder) {
+            var azureAdOptions = new AzureAdOptions();
+            var swaggerAzureAdOptions = new SwaggerAzureAdOptions();
+
+            builder.Configuration.GetSection(AzureAdOptions.Section).Bind(azureAdOptions);
+            builder.Configuration.GetSection(SwaggerAzureAdOptions.Section).Bind(swaggerAzureAdOptions);
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
+            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection(AzureAdOptions.Section))
             .EnableTokenAcquisitionToCallDownstreamApi()
             .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
             .AddInMemoryTokenCaches();
@@ -34,11 +40,11 @@ namespace EduWork.WebAPI.Configurations
                     {
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri(builder.Configuration["SwaggerAzureAd:AuthorizationUrl"]),
-                            TokenUrl = new Uri(builder.Configuration["SwaggerAzureAd:TokenUrl"]),
+                            AuthorizationUrl = new Uri(swaggerAzureAdOptions.AuthorizationUrl),
+                            TokenUrl = new Uri(swaggerAzureAdOptions.TokenUrl),
                             Scopes = new Dictionary<string, string>
                 {
-                    { builder.Configuration["SwaggerAzureAd:Scope"], "Access API" }
+                    { swaggerAzureAdOptions.Scope, "Access API" }
                 }
                         }
                     }
@@ -55,7 +61,7 @@ namespace EduWork.WebAPI.Configurations
                     Id = "oauth2"
                 }
             },
-            new[] { builder.Configuration["SwaggerAzureAd:Scope"] }
+            new[] { swaggerAzureAdOptions.Scope }
         }
     });
             });
