@@ -1,5 +1,6 @@
 ﻿using EduWork.Common.DTO;
 using EduWork.Data;
+using EduWork.Data.Entities;
 using EduWork.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,11 +20,7 @@ namespace EduWork.Domain.Services
             var userProfiles = new List<ProfileShortDto>();
             users.ForEach(user =>
             {
-                userProfiles.Add(new ProfileShortDto() { 
-                    Id = user.Id,
-                    Username = user.Username,
-                    Email = user.Email
-                });
+                userProfiles.Add(ToProfileShortDto(user));
             });
 
 
@@ -52,6 +49,25 @@ namespace EduWork.Domain.Services
 
 
             return userProfile;
+        }
+
+        public async Task<AppRoleDto> GetUserAppRoleAsync(int userId)
+        {
+            var user = await context.Users.FindAsync(userId);
+            var appRole = await context.AppRoles.Where(ar => ar.Id == user.AppRoleId).FirstOrDefaultAsync();
+            var profileShort = ToProfileShortDto(user);
+
+            var userAppRole = new AppRoleDto()
+            {
+                Id = appRole.Id,
+                Title = appRole.Title,
+                Description = appRole.Description,
+                ProfileShort = profileShort
+
+            };
+
+
+            return userAppRole;
         }
 
         public async Task<List<UserProjectDto>> GetAllUserProjectsAsync(int userId)
@@ -131,6 +147,18 @@ namespace EduWork.Domain.Services
 
 
             return userSickLeaveRecords;
+        }
+
+        private ProfileShortDto ToProfileShortDto(User user)
+        {
+            var profileShort = new ProfileShortDto()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email
+            };
+
+            return profileShort;
         }
     }
 }
