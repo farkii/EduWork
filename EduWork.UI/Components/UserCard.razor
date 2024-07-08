@@ -1,0 +1,24 @@
+﻿@using EduWork.Common.DTO
+@inject NavigationManager NavigationManager
+
+@if (User != null){
+    <div class="container mt-5">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+            <h5 class="card-title">@User.Username</h5>
+            <p class="card-text"><strong>Email:</strong> @User.Email</p>
+            <button class="btn btn-primary" @onclick="NavigateToDetails">View Profile</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public ProfileShortDto? User { get; set; }
+
+    private void NavigateToDetails()
+    {
+        NavigationManager.NavigateTo($"/profiledetails/{User.Id}");
+    }
+}

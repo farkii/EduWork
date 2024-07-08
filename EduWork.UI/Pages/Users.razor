@@ -1,0 +1,92 @@
+﻿@page "/users"
+
+
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>Users</h1>
+
+<div class="container text-center">
+    <div class="d-flex flex-row justify-content-center align-items-center"
+        <input class="m-1 form-control" placeholder="Enter email..." @onchange="InputChanged" />
+        <button class="btn btn-primary m-1" @onclick="FilterUsers">Search</button>
+    </div>
+</div>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container my-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            @foreach (var user in filteredUsers)
+            {
+                <div class="col">
+                    <UserCard User=@user />
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private List<ProfileShortDto>? users = new List<ProfileShortDto>();
+    private List<ProfileShortDto>? filteredUsers;
+    string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        //users = await Http.GetFromJsonAsync<List<ProfileShortDto>>("api/UserProfiles");
+
+        //koristi se samo za demonstraciju UI
+        users.Add(new ProfileShortDto
+            {
+                Id = 1,
+                Username = "tfarkas",
+                Email = "tfarkas866@gmail.com"
+            });
+        users.Add(new ProfileShortDto
+            {
+                Id = 2,
+                Username = "pperic",
+                Email = "pperic@gmail.com"
+            });
+        users.Add(new ProfileShortDto
+            {
+                Id = 3,
+                Username = "mmarkic",
+                Email = "mmarkic@gmail.com"
+            });
+        users.Add(new ProfileShortDto
+            {
+                Id = 4,
+                Username = "bbundalo",
+                Email = "bbundalo@gmail.com"
+            });
+        filteredUsers = users;
+    }
+
+    private void InputChanged(ChangeEventArgs e)
+    {
+        if(e.Value == null){ 
+            return; 
+        }
+        searchString = e.Value.ToString().ToLower();
+        FilterUsers();
+    }
+
+    private void FilterUsers()
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+        {
+            filteredUsers = users;
+        }
+        else
+        {
+            filteredUsers = users?.Where(u => u.Email.Contains(searchString)).ToList();
+        }
+    }
+
+}

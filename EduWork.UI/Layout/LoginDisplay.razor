@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <div class="dropdown">
+            <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false" @onclick="DropDownToggle">
+                @context.User.Identity?.Name
+            </button>
+            <ul class="@dropDownToggleClass">
+                <li><button class="dropdown-item" @onclick="NavigateToProfile">My profile</button></li>
+                <li><button class="dropdown-item" @onclick="BeginLogOut">Log out</button></li>
+            </ul>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    private string dropDownToggleClass = "dropdown-menu";
+    private bool isToggled = false;
+
+    public void BeginLogOut()
+    {
+        Navigation.NavigateToLogout("authentication/logout");
+        DropDownToggle();
+    }
+
+    public void NavigateToProfile()
+    {
+        Navigation.NavigateToLogout($"profiledetails/{1}");
+        DropDownToggle();
+    }
+
+    private void DropDownToggle()
+    {
+        isToggled = !isToggled;
+        if (isToggled)
+        {
+            dropDownToggleClass = "dropdown-menu show";
+        }
+        else
+        {
+            dropDownToggleClass = "dropdown-menu";
+        }
+    }
+}

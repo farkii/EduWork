@@ -13,7 +13,7 @@ using EduWork.Common.DTO;
 namespace EduWork.WebAPI.Controllers
 {
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfilesController(UserProfileService userProfileService) : ControllerBase
