@@ -24,6 +24,8 @@ namespace EduWork.WebAPI.Configurations
                 context.Database.Migrate();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

@@ -2,16 +2,115 @@
 
 
 @inject HttpClient Http
-
-<h1>Profile</h1>
-
 @if (userProfile == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <p>@UserId</p>
+    <div>
+        <div class="card m-1">
+            <div class="card-body">
+                <p><strong>Username: </strong> @userProfile.Username</p>
+                <p><strong>Email: </strong> @userProfile.Email</p>
+            </div>
+        </div>
+        <div class="d-flex flex-row">
+            <div class="card m-1">
+                <div class="card-header">
+                    <p><strong>Projekti</strong></p>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Start date</th>
+                                <th scope="col">End date</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">User role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var project in userProfile.Projects)
+                            {
+                                <tr>
+                                    <th scope="row">@project.Id</th>
+                                    <td>@project.Title</td>
+                                    <td>@project.StartDate</td>
+                                    <td>@project.EndDate</td>
+                                    <td>@project.Description</td>
+                                    <td>@project.RoleName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column m-1">
+                <div class="card m-1">
+                    <div class="card-header">
+                        <p><strong>Podaci o bolovanju</strong></p>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">End date</th>
+                                    <th scope="col">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var record in userProfile.SickLeaveRecords)
+                                {
+                                    <tr>
+                                        <th scope="row">@record.Id</th>
+                                        <td>@record.StartDate</td>
+                                        <td>@record.EndDate</td>
+                                        <td>@record.Comment</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card m-1">
+                    <div class="card-header">
+                        <p><strong>Ukupni godišnji za @userProfile.AnnualLeave.Year godinu: </strong>@userProfile.AnnualLeave.TotalLeaveDays</p>
+                        <p><strong>Iskorišteno: </strong> @userProfile.AnnualLeave.LeaveDaysLeft</p>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Start date</th>
+                                    <th scope="col">End date</th>
+                                    <th scope="col">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var record in userProfile.AnnualLeaveRecords)
+                                {
+                                    <tr>
+                                        <th scope="row">@record.Id</th>
+                                        <td>@record.StartDate</td>
+                                        <td>@record.EndDate</td>
+                                        <td>@record.Comment</td>
+                                    </tr>
+                                }    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </div>
 }
 
 @code {
@@ -23,9 +122,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        //userProfile = await Http.GetFromJsonAsync<ProfileDetailsDto>($"api/UserProfiles/{UserId}");
+        userProfile = await Http.GetFromJsonAsync<ProfileDetailsDto>($"api/UserProfiles/{UserId}");
 
         // koristi se samo za demonstraciju UI
+        /*
         userProfile = new ProfileDetailsDto
             {
                 Id = 1,
@@ -80,6 +180,7 @@ else
                 }
             }
             };
+            */
     }
 
 }

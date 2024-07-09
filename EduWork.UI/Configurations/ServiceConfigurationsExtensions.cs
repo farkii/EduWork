@@ -29,6 +29,7 @@ namespace EduWork.UI.Configurations
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind(AzureAdOptions.Section, options.ProviderOptions.Authentication);
+                options.ProviderOptions.LoginMode = "redirect";
                 options.ProviderOptions.DefaultAccessTokenScopes.Add(downstreamApiOptions.Scopes);
             });
         }

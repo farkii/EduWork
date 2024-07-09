@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduWork.Domain", "EduWork.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduWork.Common", "EduWork.Common\EduWork.Common.csproj", "{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduWork.UI", "EduWork.UI\EduWork.UI.csproj", "{0306445C-4976-47DB-8FFB-62B94C0B946F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduWork.UI", "EduWork.UI\EduWork.UI.csproj", "{0306445C-4976-47DB-8FFB-62B94C0B946F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1A5E468F-646E-4B04-8794-2AD4E7DEA3CD} = {1A5E468F-646E-4B04-8794-2AD4E7DEA3CD}
 	EndProjectSection
