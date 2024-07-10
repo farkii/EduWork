@@ -29,6 +29,7 @@ namespace EduWork.WebAPI.Configurations
             builder.Services.AddControllers();
 
             builder.Services.AddScoped<UserProfileService>();
+            builder.Services.AddScoped<ProjectService>();
 
             builder.Services.AddCors(options =>
             {

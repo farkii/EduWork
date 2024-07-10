@@ -10,7 +10,7 @@ else
 {
     <div>
         <div class="card m-1">
-            <div class="card-body">
+            <div class="card-body justify-content-center">
                 <p><strong>Username: </strong> @userProfile.Username</p>
                 <p><strong>Email: </strong> @userProfile.Email</p>
             </div>
@@ -123,64 +123,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         userProfile = await Http.GetFromJsonAsync<ProfileDetailsDto>($"api/UserProfiles/username/{Username}");
-
-        // koristi se samo za demonstraciju UI
-        /*
-        userProfile = new ProfileDetailsDto
-            {
-                Id = 1,
-                Username = "tfarkas",
-                Email = "tfarkas866@gmail.com",
-                Projects = new List<UserProjectDto>
-            {
-                new UserProjectDto
-                {
-                    Id = 1,
-                    Title = "Projekt A",
-                    StartDate = new DateOnly(2024, 1, 1),
-                    EndDate = new DateOnly(2024, 6, 30),
-                    Description = "Opis projekta A",
-                    RoleName = "Developer"
-                },
-                new UserProjectDto
-                {
-                    Id = 2,
-                    Title = "Projekt B",
-                    StartDate = new DateOnly(2024, 7, 1),
-                    EndDate = new DateOnly(2024, 12, 31),
-                    Description = "Opis projekta B",
-                    RoleName = "Team Lead"
-                }
-            },
-                AnnualLeave = new AnnualLeaveDto
-                {
-                    Id = 1,
-                    Year = 2024,
-                    TotalLeaveDays = 25,
-                    LeaveDaysLeft = 10
-                },
-                AnnualLeaveRecords = new List<AnnualLeaveRecordDto>
-            {
-                new AnnualLeaveRecordDto
-                {
-                    Id = 1,
-                    StartDate = new DateOnly(2024, 2, 1),
-                    EndDate = new DateOnly(2024, 2, 5),
-                    Comment = "Godisnji u Alpama"
-                }
-            },
-                SickLeaveRecords = new List<SickLeaveRecordDto>
-            {
-                new SickLeaveRecordDto
-                {
-                    Id = 1,
-                    StartDate = new DateOnly(2024, 4, 10),
-                    EndDate = new DateOnly(2024, 4, 12),
-                    Comment = "Odsutnost zbog gripe"
-                }
-            }
-            };
-            */
     }
 
 }

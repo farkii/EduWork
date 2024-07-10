@@ -16,11 +16,11 @@ namespace EduWork.Domain.Services
         public async Task<List<ProfileShortDto>> GetAllUserProfilesAsync(){
             var users = await context.Users.ToListAsync();
             var userProfiles = new List<ProfileShortDto>();
-            users.ForEach(user =>
+            foreach (var user in users)
             {
-                userProfiles.Add(ToProfileShortDto(user));
-            });
-
+                var userProfile = await ToProfileShortDto(user);
+                userProfiles.Add(userProfile);
+            }
 
             return userProfiles;
         }
@@ -28,6 +28,12 @@ namespace EduWork.Domain.Services
         public async Task<ProfileDetailsDto> GetUserProfileAsync(int userId)
         {
             var user = await context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
             var projects = await GetAllUserProjectsAsync(userId);
             var annualLeaves = await GetUserAnnualLeaveAsync(userId);
             var annualLeave = from al in annualLeaves where al.Year == DateTime.Now.Year select al;
@@ -52,6 +58,10 @@ namespace EduWork.Domain.Services
         public async Task<ProfileDetailsDto> GetUserByUsernameAsync(string username)
         {
             var user = await context.Users.Where(u => u.Username == username).Select(u => u).FirstOrDefaultAsync();
+            if (user == null) 
+            {
+                return null;    
+            }
 
             var projects = await GetAllUserProjectsAsync(user.Id);
             var annualLeaves = await GetUserAnnualLeaveAsync(user.Id);
@@ -78,7 +88,7 @@ namespace EduWork.Domain.Services
         {
             var user = await context.Users.FindAsync(userId);
             var appRole = await context.AppRoles.Where(ar => ar.Id == user.AppRoleId).FirstOrDefaultAsync();
-            var profileShort = ToProfileShortDto(user);
+            var profileShort = await ToProfileShortDto(user);
 
             var userAppRole = new AppRoleDto()
             {
@@ -172,13 +182,15 @@ namespace EduWork.Domain.Services
             return userSickLeaveRecords;
         }
 
-        private ProfileShortDto ToProfileShortDto(User user)
+        private async Task<ProfileShortDto> ToProfileShortDto(User user)
         {
+            var projects = await GetAllUserProjectsAsync(user.Id);
             var profileShort = new ProfileShortDto()
             {
                 Id = user.Id,
                 Username = user.Username,
-                Email = user.Email
+                Email = user.Email,
+                Projects = projects
             };
 
             return profileShort;

@@ -8,19 +8,33 @@
 
 <h1>Users</h1>
 
-<div class="container text-center">
-    <div class="d-flex flex-row justify-content-center align-items-center"
-        <input class="m-1 form-control" placeholder="Enter email..." @onchange="InputChanged" />
-        <button class="btn btn-primary m-1" @onclick="FilterUsers">Search</button>
-    </div>
-</div>
-
-@if (users == null)
+@if (users == null || projects == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <div class="container text-center">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+            <input class="m-1 w-50 form-control" placeholder="Enter email..." @onchange="InputChanged" />
+
+            <select class="form-select m-1 w-25" @onchange="HandleOnChangeProject">
+              <option value="0" selected>All projects</option>
+                @foreach (var project in projects)
+                {
+                    <option value="@project.Id">@project.Title</option>
+                }
+            </select>
+
+            <select class="form-select m-1 w-25" @onchange="HandleOnChangeSort">
+              <option value="1" selected>Username A-Z</option>
+              <option value="2">Username Z-A</option>
+            </select>
+
+            <button class="btn btn-primary m-1" @onclick="FilterUsers">Search</button>
+        </div>
+    </div>
+
     <div class="container my-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             @foreach (var user in filteredUsers)
@@ -35,40 +49,17 @@ else
 
 @code {
     private List<ProfileShortDto>? users = new List<ProfileShortDto>();
+    private List<ProjectShortDto>? projects = new List<ProjectShortDto>();
     private List<ProfileShortDto>? filteredUsers;
     string searchString = "";
+
+    private string SortSelected { get; set; } = "1";
+    private string ProjectSelected { get; set; } = "0";
 
     protected override async Task OnInitializedAsync()
     {
         users = await Http.GetFromJsonAsync<List<ProfileShortDto>>("api/UserProfiles");
-
-        //koristi se samo za demonstraciju UI
-        /*
-        users.Add(new ProfileShortDto
-            {
-                Id = 1,
-                Username = "tfarkas",
-                Email = "tfarkas866@gmail.com"
-            });
-        users.Add(new ProfileShortDto
-            {
-                Id = 2,
-                Username = "pperic",
-                Email = "pperic@gmail.com"
-            });
-        users.Add(new ProfileShortDto
-            {
-                Id = 3,
-                Username = "mmarkic",
-                Email = "mmarkic@gmail.com"
-            });
-        users.Add(new ProfileShortDto
-            {
-                Id = 4,
-                Username = "bbundalo",
-                Email = "bbundalo@gmail.com"
-            });
-            */
+        projects = await Http.GetFromJsonAsync<List<ProjectShortDto>>("api/Projects");
         filteredUsers = users;
     }
 
@@ -91,6 +82,30 @@ else
         {
             filteredUsers = users?.Where(u => u.Email.Contains(searchString)).ToList();
         }
+
+        if (ProjectSelected != "0")
+        {
+            filteredUsers = filteredUsers.Where(fu => fu.Projects.Any(p => p.Id == int.Parse(ProjectSelected))).ToList();
+        }
+
+        if (SortSelected == "1")
+        {
+            filteredUsers = filteredUsers.OrderBy(fu => fu.Username).ToList();
+        }
+        else
+        {
+            filteredUsers = filteredUsers.OrderByDescending(fu => fu.Username).ToList();
+        }
+    }
+
+    private void HandleOnChangeSort(ChangeEventArgs args)
+    {
+        SortSelected = args.Value.ToString();
+    }
+
+    private void HandleOnChangeProject(ChangeEventArgs args)
+    {
+        ProjectSelected = args.Value.ToString();
     }
 
 }

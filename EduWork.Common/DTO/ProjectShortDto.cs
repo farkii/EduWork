@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace EduWork.Common.DTO
 {
-    public record ProfileShortDto
+    public record ProjectShortDto
     {
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
+        public string Title { get; set; }
 
-        public List<UserProjectDto> Projects { get; set; }
     }
 }

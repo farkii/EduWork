@@ -13,7 +13,7 @@ namespace EduWork.Common.DTO
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public string Description { get; set; }
-        public bool isFinished  { get; set; }
+        public bool isFinished { get; set; }
         public bool isPrivate { get; set; }
         public bool isEducation { get; set; }
         public bool isPayable { get; set; }
