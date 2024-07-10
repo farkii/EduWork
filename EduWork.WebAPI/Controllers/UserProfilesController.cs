@@ -13,7 +13,7 @@ using EduWork.Common.DTO;
 namespace EduWork.WebAPI.Controllers
 {
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfilesController(UserProfileService userProfileService) : ControllerBase
@@ -30,6 +30,18 @@ namespace EduWork.WebAPI.Controllers
             var user = await userProfileService.GetUserProfileAsync(id);
 
             if (user == null) { 
+                return NotFound();
+            }
+            return user;
+        }
+
+        [HttpGet("username/{username}")]
+        public async Task<ActionResult<ProfileDetailsDto>> GetUserByUsername(string username)
+        {
+            var user = await userProfileService.GetUserByUsernameAsync(username);
+
+            if (user == null)
+            {
                 return NotFound();
             }
             return user;

@@ -1,4 +1,4 @@
-﻿@page "/profiledetails/{UserId:int}"
+﻿@page "/profiledetails/{Username}"
 
 
 @inject HttpClient Http
@@ -81,7 +81,7 @@ else
 
                 <div class="card m-1">
                     <div class="card-header">
-                        <p><strong>Ukupni godišnji za @userProfile.AnnualLeave.Year godinu: </strong>@userProfile.AnnualLeave.TotalLeaveDays</p>
+                        <p><strong>Ukupni godišnji za @(userProfile.AnnualLeave.Year). godinu: </strong>@userProfile.AnnualLeave.TotalLeaveDays</p>
                         <p><strong>Iskorišteno: </strong> @userProfile.AnnualLeave.LeaveDaysLeft</p>
                     </div>
                     <div class="card-body">
@@ -116,13 +116,13 @@ else
 @code {
 
     [Parameter]
-    public int UserId { get; set; }
+    public string Username { get; set; }
 
     private ProfileDetailsDto? userProfile;
 
     protected override async Task OnInitializedAsync()
     {
-        userProfile = await Http.GetFromJsonAsync<ProfileDetailsDto>($"api/UserProfiles/{UserId}");
+        userProfile = await Http.GetFromJsonAsync<ProfileDetailsDto>($"api/UserProfiles/username/{Username}");
 
         // koristi se samo za demonstraciju UI
         /*

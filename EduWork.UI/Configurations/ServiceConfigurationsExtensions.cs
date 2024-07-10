@@ -19,7 +19,7 @@ namespace EduWork.UI.Configurations
                 authorizationMessageHandler.InnerHandler = new HttpClientHandler();
                 authorizationMessageHandler = authorizationMessageHandler.ConfigureHandler(
                     authorizedUrls: new[] { downstreamApiOptions.BaseUrl },
-                    scopes: new[] { downstreamApiOptions.Scopes });
+                    scopes: new[] { downstreamApiOptions.Scope });
                 return new HttpClient(authorizationMessageHandler)
                 {
                     BaseAddress = new Uri(downstreamApiOptions.BaseUrl ?? string.Empty)
@@ -30,7 +30,7 @@ namespace EduWork.UI.Configurations
             {
                 builder.Configuration.Bind(AzureAdOptions.Section, options.ProviderOptions.Authentication);
                 options.ProviderOptions.LoginMode = "redirect";
-                options.ProviderOptions.DefaultAccessTokenScopes.Add(downstreamApiOptions.Scopes);
+                options.ProviderOptions.DefaultAccessTokenScopes.Add(downstreamApiOptions.Scope);
             });
         }
 

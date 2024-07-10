@@ -4,11 +4,11 @@
 <AuthorizeView>
     <Authorized>
         <div class="dropdown">
-            <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false" @onclick="DropDownToggle">
+            <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false" @onclick="DropDownToggle">
                 @context.User.Identity?.Name
             </button>
             <ul class="@dropDownToggleClass">
-                <li><button class="dropdown-item" @onclick="NavigateToProfile">My profile</button></li>
+                <li><button class="dropdown-item" @onclick="() => NavigateToProfile(context.User.Identity?.Name)">My profile</button></li>
                 <li><button class="dropdown-item" @onclick="BeginLogOut">Log out</button></li>
             </ul>
         </div>
@@ -28,9 +28,13 @@
         DropDownToggle();
     }
 
-    public void NavigateToProfile()
+    public void NavigateToProfile(string? username)
     {
-        Navigation.NavigateToLogout($"profiledetails/{1}");
+        if(username == null)
+        {
+            return;
+        }
+        Navigation.NavigateToLogout($"profiledetails/{username}");
         DropDownToggle();
     }
 

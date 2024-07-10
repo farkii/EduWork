@@ -13,8 +13,6 @@ namespace EduWork.Domain.Services
 {
     public class UserProfileService(AppDbContext context) : IUserProfileService
     {
-
-        // TODO dva geta za sve korisnike (samo najbitnije - za admina) i jedan za korisnika po id (jako u detalje)
         public async Task<List<ProfileShortDto>> GetAllUserProfilesAsync(){
             var users = await context.Users.ToListAsync();
             var userProfiles = new List<ProfileShortDto>();
@@ -35,6 +33,31 @@ namespace EduWork.Domain.Services
             var annualLeave = from al in annualLeaves where al.Year == DateTime.Now.Year select al;
             var annualLeaveRecords = await GetUserAnnualLeaveRecordsAsync(userId);
             var sickLeaveRecords = await GetUserSickLeaveRecordsAsync(userId);
+
+            var userProfile = new ProfileDetailsDto()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Projects = projects,
+                AnnualLeave = annualLeave.FirstOrDefault(),
+                AnnualLeaveRecords = annualLeaveRecords,
+                SickLeaveRecords = sickLeaveRecords
+            };
+
+
+            return userProfile;
+        }
+
+        public async Task<ProfileDetailsDto> GetUserByUsernameAsync(string username)
+        {
+            var user = await context.Users.Where(u => u.Username == username).Select(u => u).FirstOrDefaultAsync();
+
+            var projects = await GetAllUserProjectsAsync(user.Id);
+            var annualLeaves = await GetUserAnnualLeaveAsync(user.Id);
+            var annualLeave = from al in annualLeaves where al.Year == DateTime.Now.Year select al;
+            var annualLeaveRecords = await GetUserAnnualLeaveRecordsAsync(user.Id);
+            var sickLeaveRecords = await GetUserSickLeaveRecordsAsync(user.Id);
 
             var userProfile = new ProfileDetailsDto()
             {
