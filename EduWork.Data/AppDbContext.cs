@@ -24,15 +24,17 @@ namespace EduWork.Data
         public DbSet<UserProjectRole> UserProjectRoles { get; set; }
         public DbSet<WorkDay> WorkDays { get; set; }
         public DbSet<WorkDayTime> WorkDayTimes { get; set; }
-        /*
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-       
-        }
-        */
+
+        public AppDbContext() { }
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=EduWorkDb;Trusted_Connection=True;TrustServerCertificate=True");
+            if (!optionsBuilder.IsConfigured) 
+            { 
+                optionsBuilder.UseSqlServer("Server=.;Database=EduWorkDb;Trusted_Connection=True;TrustServerCertificate=True");
+            }
         }
 
 

@@ -182,7 +182,7 @@ namespace EduWork.Domain.Services
             return userSickLeaveRecords;
         }
 
-        private async Task<ProfileShortDto> ToProfileShortDto(User user)
+        public async Task<ProfileShortDto> ToProfileShortDto(User user)
         {
             var projects = await GetAllUserProjectsAsync(user.Id);
             var profileShort = new ProfileShortDto()
