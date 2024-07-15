@@ -1,7 +1,41 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
+@using System.Net.Http.Headers
+@inject IAccessTokenProvider TokenProvider
+@inject HttpClient Http
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="OnLogInSucceeded" />
 
 @code{
-    [Parameter] public string? Action { get; set; }
+    [CascadingParameter]
+    public CascadingAppState cascadingAppState { get; set; }
+
+    [Parameter]
+    public string? Action { get; set; }
+
+    private async Task OnLogInSucceeded(RemoteAuthenticationState state)
+    {
+        var token = await GetAccessTokenAsync(); 
+        if(token != null)
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await Http.PostAsync("api/Authentication", null);
+            response.EnsureSuccessStatusCode();
+
+            var loggedInUser = await response.Content.ReadFromJsonAsync<LoggedInUserDto>();
+            cascadingAppState.LoggedInUser = loggedInUser;
+        }
+    }
+
+    private async Task<string> GetAccessTokenAsync()
+    {
+        var result = await TokenProvider.RequestAccessToken();
+
+        if(result.TryGetToken(out var token))
+        {
+            return token.Value;
+        }
+        return null;
+    }
 }

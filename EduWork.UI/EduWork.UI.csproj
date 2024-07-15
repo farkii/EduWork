@@ -17,4 +17,8 @@
     <ProjectReference Include="..\EduWork.Common\EduWork.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>

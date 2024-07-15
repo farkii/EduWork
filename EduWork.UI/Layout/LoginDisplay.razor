@@ -5,7 +5,10 @@
     <Authorized>
         <div class="dropdown">
             <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false" @onclick="DropDownToggle">
-                @context.User.Identity?.Name
+                @if (cascadingAppState.LoggedInUser != null)
+                {
+                    @cascadingAppState.LoggedInUser.Username
+                } 
             </button>
             <ul class="@dropDownToggleClass">
                 <li><button class="dropdown-item" @onclick="() => NavigateToProfile(context.User.Identity?.Name)">My profile</button></li>
@@ -19,6 +22,8 @@
 </AuthorizeView>
 
 @code{
+    [CascadingParameter]
+    public CascadingAppState cascadingAppState { get; set; }
     private string dropDownToggleClass = "dropdown-menu";
     private bool isToggled = false;
 

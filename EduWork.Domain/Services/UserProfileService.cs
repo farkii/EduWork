@@ -1,4 +1,5 @@
 ﻿using EduWork.Common.DTO;
+using EduWork.Common.DTO.User;
 using EduWork.Data;
 using EduWork.Data.Entities;
 using EduWork.Domain.Contracts;

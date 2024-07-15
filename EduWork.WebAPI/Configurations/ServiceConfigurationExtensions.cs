@@ -1,9 +1,12 @@
 ﻿using EduWork.Data;
+using EduWork.Domain.Contracts;
 using EduWork.Domain.Services;
+using EduWork.WebAPI.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Build.Framework;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using System.Security.Principal;
 
 namespace EduWork.WebAPI.Configurations
 {
@@ -13,6 +16,7 @@ namespace EduWork.WebAPI.Configurations
         private const string EDUWORK_API_NAME = "EduWorkApi";
         private const string EDUWORK_API_VERSION = "v1";
         private const string AUTHENTICATION_ID = "oauth2";
+        private const string NAME_CLAIM_TYPE = "name";
         public static void AllServiceConfigurations(this WebApplicationBuilder builder) {
             var azureAdOptions = new AzureAdOptions();
             var swaggerAzureAdOptions = new SwaggerAzureAdOptions();
@@ -26,10 +30,16 @@ namespace EduWork.WebAPI.Configurations
             .AddMicrosoftGraph(builder.Configuration.GetSection(MICROSOFT_GRAPH_SECTION))
             .AddInMemoryTokenCaches();
 
+            builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters.NameClaimType = NAME_CLAIM_TYPE;
+            });
+
             builder.Services.AddControllers();
 
-            builder.Services.AddScoped<UserProfileService>();
-            builder.Services.AddScoped<ProjectService>();
+            builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+            builder.Services.AddScoped<IProjectService, ProjectService>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             builder.Services.AddCors(options =>
             {
@@ -81,6 +91,8 @@ namespace EduWork.WebAPI.Configurations
             });
 
 
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddTransient<Identity>();
 
             builder.Services.AddDbContext<AppDbContext>();
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using EduWork.UI.Layout;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -29,11 +30,14 @@ namespace EduWork.UI.Configurations
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind(AzureAdOptions.Section, options.ProviderOptions.Authentication);
-                options.ProviderOptions.LoginMode = "redirect";
+                options.ProviderOptions.LoginMode = "popup";
                 options.ProviderOptions.DefaultAccessTokenScopes.Add(downstreamApiOptions.Scope);
             });
+
+            builder.Services.AddCascadingValue(cv => new CascadingAppState());
         }
 
+       
         public static void AddRootComponents(this WebAssemblyHostBuilder builder) {
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");

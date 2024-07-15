@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EduWork.Common.DTO
+namespace EduWork.Common.DTO.User
 {
     public record ProfileShortDto
     {

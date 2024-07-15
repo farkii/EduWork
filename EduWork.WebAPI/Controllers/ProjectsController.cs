@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web.Resource;
 using EduWork.Domain.Services;
 using EduWork.Common.DTO;
+using EduWork.Domain.Contracts;
 
 namespace EduWork.WebAPI.Controllers
 {
@@ -18,7 +19,7 @@ namespace EduWork.WebAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectsController(ProjectService projectService) : ControllerBase
+    public class ProjectsController(IProjectService projectService) : ControllerBase
     {
 
         // GET: api/Projects

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web.Resource;
 using EduWork.Domain.Contracts;
 using EduWork.Domain.Services;
-using EduWork.Common.DTO;
+using EduWork.Common.DTO.User;
 
 namespace EduWork.WebAPI.Controllers
 {
@@ -16,7 +16,7 @@ namespace EduWork.WebAPI.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserProfilesController(UserProfileService userProfileService) : ControllerBase
+    public class UserProfilesController(IUserProfileService userProfileService) : ControllerBase
     {
 
         [HttpGet]
