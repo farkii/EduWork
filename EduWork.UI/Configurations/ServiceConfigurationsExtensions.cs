@@ -1,4 +1,5 @@
-﻿using EduWork.UI.Layout;
+﻿using EduWork.UI.Authentication;
+using EduWork.UI.Layout;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -7,6 +8,8 @@ namespace EduWork.UI.Configurations
 {
     public static class ServiceConfigurationsExtensions
     {
+        private const string LOGIN_MODE = "popup";
+        private const string ROLE_CLAIM = "appRole";
         public static void ApplyServiceConfigurations(this WebAssemblyHostBuilder builder) {
             var azureAdOptions = new AzureAdOptions();
             var downstreamApiOptions = new DownstreamApiOptions();
@@ -27,12 +30,14 @@ namespace EduWork.UI.Configurations
                 };
             });
 
-            builder.Services.AddMsalAuthentication(options =>
+            builder.Services.AddMsalAuthentication<RemoteAuthenticationState, UserAccount>(options =>
             {
                 builder.Configuration.Bind(AzureAdOptions.Section, options.ProviderOptions.Authentication);
-                options.ProviderOptions.LoginMode = "popup";
+                options.ProviderOptions.LoginMode = LOGIN_MODE;
                 options.ProviderOptions.DefaultAccessTokenScopes.Add(downstreamApiOptions.Scope);
-            });
+                options.UserOptions.RoleClaim = ROLE_CLAIM;
+            })
+                .AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, UserAccount, UserAccountFactory>();
 
             builder.Services.AddCascadingValue(cv => new CascadingAppState());
         }

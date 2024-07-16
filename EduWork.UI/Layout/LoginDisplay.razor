@@ -5,10 +5,7 @@
     <Authorized>
         <div class="dropdown">
             <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false" @onclick="DropDownToggle">
-                @if (cascadingAppState.LoggedInUser != null)
-                {
-                    @cascadingAppState.LoggedInUser.Username
-                } 
+                    @context.User.Identity?.Name
             </button>
             <ul class="@dropDownToggleClass">
                 <li><button class="dropdown-item" @onclick="() => NavigateToProfile(context.User.Identity?.Name)">My profile</button></li>
@@ -39,7 +36,7 @@
         {
             return;
         }
-        Navigation.NavigateToLogout($"profiledetails/{username}");
+        Navigation.NavigateTo($"profiledetails/{username}");
         DropDownToggle();
     }
 

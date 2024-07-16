@@ -17,6 +17,7 @@ namespace EduWork.WebAPI.Configurations
         private const string EDUWORK_API_VERSION = "v1";
         private const string AUTHENTICATION_ID = "oauth2";
         private const string NAME_CLAIM_TYPE = "name";
+        private const string ROLE_CLAIM_TYPE = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
         public static void AllServiceConfigurations(this WebApplicationBuilder builder) {
             var azureAdOptions = new AzureAdOptions();
             var swaggerAzureAdOptions = new SwaggerAzureAdOptions();
@@ -33,6 +34,7 @@ namespace EduWork.WebAPI.Configurations
             builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.TokenValidationParameters.NameClaimType = NAME_CLAIM_TYPE;
+                options.TokenValidationParameters.RoleClaimType = ROLE_CLAIM_TYPE;
             });
 
             builder.Services.AddControllers();
