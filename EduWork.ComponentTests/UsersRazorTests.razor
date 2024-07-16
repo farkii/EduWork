@@ -1,0 +1,125 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bunit
+@using Bunit.TestDoubles
+@using EduWork.Common.DTO
+@using EduWork.Common.DTO.User
+@using EduWork.UI.Pages
+@using Microsoft.Extensions.DependencyInjection
+@using System.Threading
+@using RichardSzalay.MockHttp
+@using Xunit
+@inherits TestContext
+
+@code {
+    private List<ProfileShortDto> GetUsers()
+    {
+        var users = new List<ProfileShortDto>
+        {
+            new ProfileShortDto {Id = 1, Username = "User1", Email = "user1@example.com", Projects = new List<UserProjectDto>{ } },
+            new ProfileShortDto {Id = 2, Username = "User2", Email = "user2@example.com", Projects = new List<UserProjectDto>{ new UserProjectDto { Id = 1 } } }
+        };
+
+        return users;
+    }
+
+    private List<ProjectShortDto> GetProjects()
+    {
+        var projects = new List<ProjectShortDto>
+        {
+            new ProjectShortDto { Id = 1, Title = "Project1" }
+        };
+
+        return projects;
+    }
+
+
+    [Fact]
+    public async void UsersComponent_RendersUsersCorrectly()
+    {
+        var users = GetUsers();
+        var projects = GetProjects();
+
+        var mock = Services.AddMockHttpClient();
+        mock.When("http://localhost/api/UserProfiles").RespondJson(users);
+        mock.When("http://localhost/api/Projects").RespondJson(projects);
+
+        var cut = Render(@<Users/>);
+
+        cut.WaitForState(() => cut.FindAll("div.user-card").Count == users.Count);
+
+        int numUsers = cut.FindAll("div.user-card").Count;
+
+        Assert.Equal(users.Count, numUsers);
+    }
+
+    [Fact]
+    public void UsersComponent_SearchFiltersUsersCorrectily()
+    {
+        var users = GetUsers();
+        var projects = GetProjects();
+
+        var mock = Services.AddMockHttpClient();
+        mock.When("http://localhost/api/UserProfiles").RespondJson(users);
+        mock.When("http://localhost/api/Projects").RespondJson(projects);
+
+        var cut = Render(@<Users />);
+
+        cut.WaitForState(() => cut.FindAll("div.user-card").Count == users.Count);
+
+        cut.Find("input.search-user").Change("user1@example.com");
+        cut.Find("button.filter").Click();
+
+        int numUsers = cut.FindAll("div.user-card").Count;
+
+        Assert.Equal(1, numUsers);
+        cut.Find("h5.card-title").MarkupMatches("<h5 class=\"card-title\">User1</h5>");
+    }
+
+    [Fact]
+    public void UsersComponent_ProjectFilterFiltersUsersCorrectily()
+    {
+        var users = GetUsers();
+        var projects = GetProjects();
+
+        var mock = Services.AddMockHttpClient();
+        mock.When("http://localhost/api/UserProfiles").RespondJson(users);
+        mock.When("http://localhost/api/Projects").RespondJson(projects);
+
+        var cut = Render(@<Users />);
+
+        cut.WaitForState(() => cut.FindAll("div.user-card").Count == users.Count);
+
+        cut.Find("select.select-project").Change("1");
+        cut.Find("button.filter").Click();
+
+        int numUsers = cut.FindAll("div.user-card").Count;
+
+        Assert.Equal(1, numUsers);
+        cut.Find("h5.card-title").MarkupMatches("<h5 class=\"card-title\">User2</h5>");
+    }
+
+    [Fact]
+    public void UsersComponent_SortFilterFiltersUsersCorrectily()
+    {
+        var users = GetUsers();
+        var projects = GetProjects();
+
+        var mock = Services.AddMockHttpClient();
+        mock.When("http://localhost/api/UserProfiles").RespondJson(users);
+        mock.When("http://localhost/api/Projects").RespondJson(projects);
+
+        var cut = Render(@<Users />);
+
+        cut.WaitForState(() => cut.FindAll("div.user-card").Count == users.Count);
+
+        cut.Find("select.order-select").Change("2");
+        cut.Find("button.filter").Click();
+
+        int numUsers = cut.FindAll("div.user-card").Count;
+
+        Assert.Equal(users.Count, numUsers);
+        cut.Find("h5.card-title").MarkupMatches("<h5 class=\"card-title\">User2</h5>");
+    }
+}

@@ -16,9 +16,9 @@ else
 {
     <div class="container text-center">
         <div class="d-flex flex-row justify-content-center align-items-center">
-            <input class="m-1 w-50 form-control" placeholder="Enter email..." @onchange="InputChanged" />
+            <input class="m-1 w-50 form-control search-user" placeholder="Enter email..." @onchange="InputChanged" />
 
-            <select class="form-select m-1 w-25" @onchange="HandleOnChangeProject">
+            <select class="form-select m-1 w-25 select-project" @onchange="HandleOnChangeProject">
               <option value="0" selected>All projects</option>
                 @foreach (var project in projects)
                 {
@@ -26,22 +26,25 @@ else
                 }
             </select>
 
-            <select class="form-select m-1 w-25" @onchange="HandleOnChangeSort">
+            <select class="form-select m-1 w-25 order-select" @onchange="HandleOnChangeSort">
               <option value="1" selected>Username A-Z</option>
               <option value="2">Username Z-A</option>
             </select>
 
-            <button class="btn btn-primary m-1" @onclick="FilterUsers">Search</button>
+            <button class="btn btn-primary m-1 filter" @onclick="FilterUsers">Search</button>
         </div>
     </div>
 
     <div class="container my-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            @foreach (var user in filteredUsers)
+            @if (filteredUsers != null)
             {
-                <div class="col">
-                    <UserCard User=@user />
-                </div>
+                @foreach (var user in filteredUsers)
+                {
+                    <div class="col">
+                        <UserCard User=@user />
+                    </div>
+                }
             }
         </div>
     </div>
@@ -58,8 +61,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        users = await Http.GetFromJsonAsync<List<ProfileShortDto>>("api/UserProfiles");
-        projects = await Http.GetFromJsonAsync<List<ProjectShortDto>>("api/Projects");
+        try
+        {
+            users = await Http.GetFromJsonAsync<List<ProfileShortDto>>("api/UserProfiles");
+            projects = await Http.GetFromJsonAsync<List<ProjectShortDto>>("api/Projects");
+        }catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
         filteredUsers = users;
     }
 
