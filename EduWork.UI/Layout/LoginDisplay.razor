@@ -4,13 +4,9 @@
 <AuthorizeView>
     <Authorized>
         <div class="dropdown">
-            <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false" @onclick="DropDownToggle">
-                    @context.User.Identity?.Name
+            <button disabled class="btn btn-primary" type="button">
+                @context.User.Identity?.Name - @context.User.FindFirst(c => c.Type == "appRole")?.Value
             </button>
-            <ul class="@dropDownToggleClass">
-                <li><button class="dropdown-item" @onclick="() => NavigateToProfile(context.User.Identity?.Name)">My profile</button></li>
-                <li><button class="dropdown-item" @onclick="BeginLogOut">Log out</button></li>
-            </ul>
         </div>
     </Authorized>
     <NotAuthorized>
@@ -21,13 +17,11 @@
 @code{
     [CascadingParameter]
     public CascadingAppState cascadingAppState { get; set; }
-    private string dropDownToggleClass = "dropdown-menu";
-    private bool isToggled = false;
+    
 
     public void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
-        DropDownToggle();
     }
 
     public void NavigateToProfile(string? username)
@@ -37,19 +31,5 @@
             return;
         }
         Navigation.NavigateTo($"profiledetails/{username}");
-        DropDownToggle();
-    }
-
-    private void DropDownToggle()
-    {
-        isToggled = !isToggled;
-        if (isToggled)
-        {
-            dropDownToggleClass = "dropdown-menu show";
-        }
-        else
-        {
-            dropDownToggleClass = "dropdown-menu";
-        }
     }
 }
