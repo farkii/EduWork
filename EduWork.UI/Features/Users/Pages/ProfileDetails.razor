@@ -1,5 +1,7 @@
 ﻿@page "/profiledetails/{Username}"
+@using Microsoft.AspNetCore.Authorization
 
+@attribute [Authorize]
 
 @inject HttpClient Http
 @if (userProfile == null)
@@ -83,11 +85,6 @@ else
                                 }
                             </tbody>
                         </table>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex flex-row">
-                            <p><strong>Ukupan broj dana: </strong> @userProfile.Email</p>
-                        </div>
                     </div>
                 </div>
 

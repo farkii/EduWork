@@ -14,7 +14,15 @@
         var user = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if (user.User.Identity.IsAuthenticated)
         {
-            Navigation.NavigateTo("/worktime");
+            if (user.User.IsInRole("Administrator"))
+            {
+                Navigation.NavigateTo("/worktime/admin");
+            }
+            else if (user.User.IsInRole("Employee"))
+            {
+                Navigation.NavigateTo("/worktime/employee");
+            }
+            
         }else
         {
             Navigation.NavigateTo("authentication/login");

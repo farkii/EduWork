@@ -15,7 +15,7 @@
         <div class="flex-column">
             <AuthorizeView Roles="Administrator">
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="worktime" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" href="worktime/admin" Match="NavLinkMatch.All">
                         <span class="bi bi-clock-nav-menu" aria-hidden="true"></span> Work Time
                     </NavLink>
                 </div>
@@ -27,17 +27,17 @@
                     {
                         <div class="sub-menu ms-2">
                             <div class="nav-item px-2">
-                                <NavLink class="nav-link" href="projecttime" Match="NavLinkMatch.All">
+                                <NavLink class="nav-link" href="projecttime/admin" Match="NavLinkMatch.All">
                                     <span class="bi bi-clock-nav-menu" aria-hidden="true"></span> Input project time
                                 </NavLink>
                             </div>
                             <div class="nav-item px-2">
-                                <NavLink class="nav-link" href="projecthistory" Match="NavLinkMatch.All">
+                                <NavLink class="nav-link" href="projecthistory/admin" Match="NavLinkMatch.All">
                                     <span class="bi bi-clock-history-nav-menu" aria-hidden="true"></span> History
                                 </NavLink>
                             </div>
                             <div class="nav-item px-2">
-                                <NavLink class="nav-link" href="projectstatistics" Match="NavLinkMatch.All">
+                                <NavLink class="nav-link" href="projectstatistics/admin" Match="NavLinkMatch.All">
                                     <span class="bi bi-graph-up-nav-menu" aria-hidden="true"></span> Project statistics
                                 </NavLink>
                             </div>
@@ -53,15 +53,35 @@
             <AuthorizeView Roles="Employee">
 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" href="worktime/employee" Match="NavLinkMatch.All">
                         <span class="bi bi-clock-nav-menu" aria-hidden="true"></span> Work Time
                     </NavLink>
                 </div>
 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" @onclick="ToggleSubMenu" Match="NavLinkMatch.All">
                         <span class="bi bi-folder-fill-nav-menu" aria-hidden="true"></span> Projects
                     </NavLink>
+                    @if (SubMenuToggled)
+                    {
+                        <div class="sub-menu ms-2">
+                            <div class="nav-item px-2">
+                                <NavLink class="nav-link" href="projecttime/employee" Match="NavLinkMatch.All">
+                                    <span class="bi bi-clock-nav-menu" aria-hidden="true"></span> Input project time
+                                </NavLink>
+                            </div>
+                            <div class="nav-item px-2">
+                                <NavLink class="nav-link" href="projecthistory/employee" Match="NavLinkMatch.All">
+                                    <span class="bi bi-clock-history-nav-menu" aria-hidden="true"></span> History
+                                </NavLink>
+                            </div>
+                            <div class="nav-item px-2">
+                                <NavLink class="nav-link" href="projectstatistics/employee" Match="NavLinkMatch.All">
+                                    <span class="bi bi-graph-up-nav-menu" aria-hidden="true"></span> Project statistics
+                                </NavLink>
+                            </div>
+                        </div>
+                    }
                 </div>
                 
             </AuthorizeView>
