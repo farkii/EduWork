@@ -2,12 +2,20 @@
 @inject NavigationManager NavigationManager
 
 @if (User != null){
-    <div class="container mt-5 user-card">
-        <div class="card" style="width: 18rem;">
+    <div class="container user-card">
+        <div class="card" style="width: 20rem;">
+            <div class="card-header">
+                <div class="d-flex flex-row align-items-center">
+                    <span class="bi bi-person-circle-icon" aria-hidden="true"></span>
+                    <div class="d-flex flex-column">
+                        <h5 class="card-title">@User.Username</h5>
+                        <p class="card-text"><strong>Email:</strong> @User.Email</p>
+                    </div>
+                </div>
+                
+            </div>
             <div class="card-body">
-            <h5 class="card-title">@User.Username</h5>
-            <p class="card-text"><strong>Email:</strong> @User.Email</p>
-            <button class="btn btn-primary" @onclick="NavigateToDetails">View Profile</button>
+                <button class="btn btn-primary" @onclick="NavigateToDetails">View Profile</button>
             </div>
         </div>
     </div>
