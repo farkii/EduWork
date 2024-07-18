@@ -1,4 +1,4 @@
-﻿namespace EduWork.UI.Configurations
+﻿namespace EduWork.UI.Core.Configurations
 {
     public class AzureAdOptions
     {

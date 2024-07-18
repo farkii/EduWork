@@ -3,6 +3,7 @@
 @using System.Net.Http.Headers
 @inject IAccessTokenProvider TokenProvider
 @inject HttpClient Http
+@inject NavigationManager Navigation
 
 <RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="OnLogInSucceeded" />
 

@@ -1,10 +1,10 @@
-﻿using EduWork.UI.Authentication;
-using EduWork.UI.Layout;
+﻿using EduWork.UI.Core.Authentication;
+using EduWork.UI.Core.StateManagement;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace EduWork.UI.Configurations
+namespace EduWork.UI.Core.Configurations
 {
     public static class ServiceConfigurationsExtensions
     {

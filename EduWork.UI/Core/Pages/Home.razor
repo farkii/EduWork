@@ -1,0 +1,23 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Home</PageTitle>
+
+@attribute [Authorize]
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (user.User.Identity.IsAuthenticated)
+        {
+            Navigation.NavigateTo("/worktime");
+        }else
+        {
+            Navigation.NavigateTo("authentication/login");
+        }
+    }
+}

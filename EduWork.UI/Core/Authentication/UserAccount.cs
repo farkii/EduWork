@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System.Text.Json.Serialization;
 
-namespace EduWork.UI.Authentication
+namespace EduWork.UI.Core.Authentication
 {
     public class UserAccount : RemoteUserAccount
     {
